@@ -1,0 +1,118 @@
+ECS, FARGATE, ECR AND EKS.
+
+DOCKER INTRODUCTION
+Docker is a software development platform to deploy apps.
+Apps are packaged in containers that can be run on any OS
+
+USECASE:	microservice architecture, lift and shift app from onpremise to cloud.
+
+DOCKER images are stored in docker repositories.
+
+docker container management on AWS
+amazon ECS: Amazon's owned container platform
+amazon EKS: amazon's managed kubernetes service (open source)
+amazon fargate: amazon own serverless container platform.
+	works with EKS and ECS
+amazon ECR: Stores container images
+
+
+==================================================
+
+AMAZON ECS
+AMAZON elastic container service. 
+
+ECS - EC2 LAUNCH TYPE 
+docker containers are placed on amazon 	EC2 launch instance
+EC2 runs the ECS agent to register in the ECS cluster.
+AWS takes care of starting and stopping the containers
+it is used to deploy the docker images stored on ECR
+
+
+ECS - FARGATE LAUNCH TYPE
+LAUNCH docker container on AWS
+no EC2 instance provisioned
+it is serverless
+
+
+IAM ROLE FOR ECS
+EC2 instance profile (EC2 launch type only)
+
+
+ECS - DATA VOLUMES (EFS)
+
+ECS uses the EFS as mount volume=========== PLS NOTE 
+
+EFS volume can be shared between different EC2 instances and different ECS Tasks. 
+It can be used as a persistent multi-AZ shared storage for your containers.
+
+mount EFS file system unto ECS task.
+works for both EC2 and fargate
+task running in any AZ will contain the same data in the EFS file system
+fargate + EFS = Serverless. 
+
+NOTE: Amazon S3 cannot be mounted as a file system on your ECS task.
+
+
+==================================================================
+
+
+AMAZON ECS - SOLUTIONS ARCHITECTURES
+
+ECS task is invoked by an even bridge
+
+All new applications to be deployed must have a fresh IAM role policy.
+
+===============================================
+
+AMAZON ECR
+ELASTIC CONTAINER REGISTRY= use to store and manage docker images on AWS.
+fully integrated with ECS, backed by amazon S3
+Access is controlled through IAM
+it supports versioning, image vulnerability, scanning, image tags and image lifecycle
+
+=====================================================
+
+
+AMAZON EKS
+amazon elastic kubernetes service is an open source system used to deploy and manage containerized (usually docker)applications such as docker images.
+it is a way to launch managed kubernetes cluster on AWS.
+it is an alternative to ECS. but similar API
+EKS supports EC2 if you want to deploy worker nodes or fargate (serverless)
+USECASE: if a company is already using kubernetes on-premise and they want to migrate to AWS cloud using kubernetes
+EKS is cloud agnostic. i.e can work in any kind of cloud providers (Azure, Google Cloud .....)
+EKS supports fargate.
+you can attcah data volume to amazon EKS (only supports EBS and EFS (EFS works with Fargate), amazon FSx for lustre, amazon FSx for NetApp ONTAP)
+
+======================================================
+
+AWS APP RUNNER
+
+It is a fully managed service that makes it easy to deploy web applications and and APIs at scale
+
+no infrastructure experience required
+
+starts with your source code or container image
+
+automatic builds and deploy the web app
+
+automatic scaling, load balancing, encryption and highly available
+
+VPC access support
+
+connects to a database, cache, and message queue services
+
+USECASE: API, web services, microservices, rapid production deployment
+
+
+
+
+
+
+
+
+
+
+
+
+
+

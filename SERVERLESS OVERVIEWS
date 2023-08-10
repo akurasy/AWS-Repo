@@ -1,0 +1,173 @@
+LAMBDA OVERVIEW
+
+LAMBDA initally called function as a service (FaaS)is a virtual functions. no server to manage
+run on demand
+limited by time
+scaling is automated.
+up to 10GB per function
+increasing the RAM of function will increase throughput
+
+languages: Node.js, pyhton, java, C#, Golang, ruby, C#/powershell, RUST.
+
+ECS/FARGATE is preferred for running docker images on Lambda
+
+first 1million requests are free.
+400GB/s compute time per month for free 
+
+
+
+=============================================
+
+LAMBDA LIMITS - per region.
+
+execution:
+limit= 128MB - 10GB
+max execution time 900secs
+environmental variables
+disk capacity in the container 512mb to 10gb
+
+deployment:
+deployment size 50mb
+size of uncompressed deployment 250mb
+can us /tmp directory to load other files from startup
+size of environment variables: 4kb
+
+PLS NOTE : LAMBDA IS NOT GOOD FOR A HEAVY WORKLOAD.
+
+=================================================================
+
+LAMBDA@EDGE AND CLOUDFRONT FUNCTIONS
+
+CUSTOMIZATION AT EDGE LOCATION
+this means you want to run your lambda function at an edge location close to the user. this will minimize latency and increase throughput.
+this is done by attaching a code to cloudfront distribution
+
+cloudfront provide two types of functions: cloudfront functions and lambda@edge
+
+Amazon CloudFront is a fast content delivery network (CDN) service that securely delivers data, videos, applications, 
+and APIs to customers globally with low latency, high transfer speeds. This is a perfect use case for Amazon CloudFront.
+
+usecase:
+website security and privacy
+dynamic web app at the edge
+search engine optimization (SEO)
+intelligently route accross origin and data cneters
+Bot mitigation at the edge
+real-time image transformation
+A/B testing
+user authentication and authorisation 
+user prioritization
+user tracking and analytics
+
+Cloudfront functions
+client interract with cloudfront, cloudfront interacts with the origin to produce a client/viewer request.
+
+lambda@edge
+used to scale cloudfront request and responses
+
+LAMBDA DOEST NOT HAVE AN OUT NOF THE BOX CACHING FEATURE.
+
+==========================================================
+
+LAMBDA IN VPC
+
+LAMBDA are launched in AWS managed VPC
+it doesnt have the capacity to have access to external VPC outside AWS
+
+RDS proxy is used to solve the architecture problem of your database. 
+
+lamda connects to your rds proxy and rds proxy connects to your rds database.
+
+===================================================
+
+RDS - INVOKING LAMBDA AND EVENT NOTIFICATIONS
+Invoke lmabda from rds and aurora
+
+==================================================
+
+AMAZON DYNAMODB
+fully managed, highly available with replication accross multiple AZs.
+noSQL , noRDS
+fast and consistent in perfprmance (SINGLE-DIGIT MILLISECONDS PERFORMANCE).
+integrated with IAM for security
+always available
+
+read/write capacity mode
+provisioned mode (default)
+on-demand mode
+
+ADVANCED DYNAMODB
+
+DYNAMODB ACCELERATOR (DAX)
+fully managed inmemory cache for dynamodb
+help solve congestion by caching
+doesnt require application for logic modification
+5mins TTL for cache
+integrated with TTL
+integration with S3
+used for disaster recovery: point in time recovery (PITR)
+
+DynamoDB Streams enable DynamoDB to get a changelog and use that changelog to replicate data across replica tables in other AWS Regions.
+
+=========================================================
+
+API GATEWAY OVERVIEW.
+
+This is a serverless gateway from AWS which allows us to create a rest API that can be made public and accessible for clients.
+support for websocket protocol
+
+API GATEWAY ENDPOINTS
+edge optimised (default)
+regional
+private = used within your vpc
+
+API GATEWAY SECURITY
+
+user authenticatioin through IAM roles (internal app) 
+cognito (identity for external users), 
+customised authorizer (lambda invoked function)
+
+custom domain name HTTPS security through integration with AWS certificate manager (ACM)
+
+==========================================
+
+AWS STEP FUNCTION
+
+this is a process of building a serverless visual workflow to orchestrate your lambda function and supports human approval.
+
+===================================
+
+AMAZON COGNITO
+it enables users to interact with web and mobile app
+it provides the sign in functionality for app users.
+it enables you to create a user base for your mobile and web application
+IT IS SPECIFIC FOR USERS SITTING OUTSIDE OF AWS
+
+COGNITO VS IAM : hundreds of users, mobile users, authenticate with SAML
+
+
+FEAUTRES OF COGNITO
+serverless for mobile and web app
+username feature
+password feature
+password reset 
+email and phone number verification
+MFA
+federal identity; intergation with email, facebook google and SAML e.t.c
+
+
+COGNITO IDENTITY POOL ALLOWS USERS TO HAVE ACCESS TO AWS SERVICES DIRECTLY THROUGH THE API GATEWAY 
+
+
+
+
+
+
+
+
+
+ 
+
+
+
+ 

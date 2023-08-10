@@ -1,0 +1,177 @@
+INTRODUCTION TO MESSAGING.
+
+buying service ========= shipping service = synchronous communication
+buying service =====Queue=======shipping service = asynchronous communication
+
+synchronous can be problematic if there is a sudden spike in traffic.
+in this case it is better to decouple your applications using,
+SQS-  Queue model
+SNS - Pub/Sub model
+Kinesis- real time streaming model.
+
+================================================
+
+SQS
+what is a Queue?: queue service helps to decouple messages between a producer and a consumer.
+fully managed service for decoupling applications. anytime you see decoupling in your exam, think about SQS.
+Unlimited number of messaages in Queue
+default retention of 4days and max of 14days
+limitation 256kb per message sent
+to decouple between two application tier.
+
+SECURITY; encryption. IAM policy, SQS policy (similar to S3 policy)
+
+Amazon SQS allows you to retain messages for days and process them later, while we can take down our EC2 instances.
+
+
+========================================================
+
+SQS FIFO QUEUE
+first in first out (FIFO) 
+ordering messages in the queue
+300 messages per sec
+exactly one send capability
+
+=========================================
+
+AMAZON SNS
+
+Simple notification service: used to send messages to many receivers
+up to 12million subscribers per topic
+100,000 topic limit.
+
+SNS ========> PUBLISH TO SUBSCRIBERS (email, HTTP/HTTPS endpoint, SMS and mobile notifications)
+
+many AWS service can be message to SNS for notifications. Example;
+AWS budget, cloudwatch alarm, ASG, S3 Bucket, Cloudformation, AWS DMS
+
+HOW TO PUBLISH TO SNS
+-	create a topic
+-	create a subscription (or many)
+-	publish to the topic. 
+
+
+SNS SECURITY
+Inflight encryption, encryption at rest (KMS), client-side encryption.
+
+
+
+SNS-FANOUT
+Used in sending multiple message to multiple SQS, S3 queue,  SNS TO S3 through data kinetic firehouse, FIFO capability.
+
+
+==========================================================
+
+
+AMAZON KINESIS
+makes you to collect, process and analyse data stream in real-time
+ingest real-time data such as : application logs, metrics, website clickstreams, IoT telemetrics data.
+
+Kinesis Data Stream: collect, process and stores data streams.
+stores data for 1 to 365days
+data is immutable (cannot be deleted)
+data that shares same partition goes to the same shard.
+
+Kinesis Data Firehose: load data stream into AWS data store
+
+Kinesis Data Analytics: analyse data stream with SQL and apache flink
+
+Kinesis Video Streams: capture, process and store video streams
+
+=========================================================
+
+
+
+KINETIC DATA FIREHOSE
+takes data from sources and write them into destinations
+sources = kinesis data stream, amazon cloudwatch, AWS IoT
+destination= S3 endpoint, amazon redshift, amazon opensearch and other 3rd parry destinations (mongo db, data dog, newrelic)
+
+EXAM QUESTION; DIFF BTW KINESIS DATA STREAM AND KINESIS FIREHOSE
+
+DATA STREAM: 
+	streaming service for ingest at scale
+	write custom code (producer / consumer)
+	real time
+	managing scale
+	stores data up to 1 to 365days
+	supports replay capability
+
+FIREHOSE:
+	load stteaming data into s3, aws redshift, and amazon open search
+	near real-time (about 60 secs)
+	automatic scaling
+	no data storage
+	doesnt support replay capabilities.
+
+===================================================================
+
+ORDERING DATA IN KINESIS AND SQS
+
+KINESIS DATA
+to send data in kinesis, you can use the pertition key.
+the same key will always go to the same shard.
+
+The capacity limits of a Kinesis data stream are defined by the number of shards within the data stream. 
+The limits can be exceeded by either data throughput or the number of reading data calls. 
+Each shard allows for 1 MB/s incoming data and 2 MB/s outgoing data. 
+You should increase the number of shards within your data stream to provide enough capacity.
+
+SQS
+no ordering in SQS standadrd
+in SQS FIFO , if you dont use the group ID, messages are consumed in the order they are sent.
+
+KINESIS VS SQS ORDERING
+
+KINESIS
+you will have data ordered in each shard
+max number of consumer in parallel is 5
+can receive up to 5mb of data
+
+SQS FIFO
+you can only have one SQS FIFO queue
+you will have 100 group ID
+you can have up to 100 customers 
+up to 300 messages per second (or 3000 if use batching)
+
+
+=========================================================
+
+
+SQS VS SNS VS KINESIS
+
+SQS:
+consumer pull data
+data is deleted after being consumed
+we can have many consumers
+to need to provision throughput
+ordeing guaranteed only on FIFO
+individual message delay capabilities
+
+SNS
+push data to many consumers
+up to 12,5m subscribers
+no data persistence
+up to 100,000 topics
+no throughput provision.
+
+KINESIS
+standard more : customers pull data from kinesis. 2mb per shard
+ehnanced fan-out : push data to customers
+real time data analytics
+possible to replay data
+ordering at the shard level
+provisioned mode or on-demand capacity
+
+
+
+
+==========================================
+
+AMAZON MQ
+When migrating to cloud, instead of rearranging the application to use SNS and SQS, you can use MQ
+amazon MQ is a managed message broker 
+
+Amazon MQ supports industry-standard APIs such as JMS and NMS, and protocols for messaging, including AMQP, STOMP, MQTT, and WebSocket.
+
+Amazon MQ helps you migrate your applications to AWS without re-engineering the applications and modifying the code

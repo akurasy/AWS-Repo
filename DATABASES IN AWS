@@ -1,0 +1,154 @@
+CHOOSING THE RIGHT DATA BASE
+
+We have a lot of managed databases in AWS. databases are chiosen based on the following required architecture;\
+read heavy, write heavy, throughput, will it chnage, doese need scaling or fluctuate during the day
+how much data to be stored and how long, will it grow, how are they accessed ?
+data durabilty. source of truth for the data
+latency requirements, data model
+schema, reporting, flexibility, RDBMS, noSQ
+LICENSE COST
+
+
+DATABASE TYPES
+
+- RDBMS - RDS and aurora- great for joint.
+- noSQL - No joint, no SQL, : dynamodb, elasticache, neptune, documentdb(for mongodb), keyspaces (for apache cassandra)
+- object store - S3
+- data warehouse - redshift, athena, EMR
+- search - opensearch (JSON)
+- graphs - amazon neptune (displays relationship between data)
+- ledger - quantum ledger database
+- time series- amazon time-stream
+
+============================================
+
+AMAZON RDS
+
+Managed POSTGRES / MYSQL / ORACLE / SQL SERVER / MARIA DB / CUSTOM (available for oracle and SQL)
+autoscaling capability for storage
+support for read replica and multi AZ
+security through IAM, SG, KMS, SSL in transit.
+automatic backup with point in time restor (up to 35 days)
+manual db snapshot for long term recover
+managed and scheduled maintainance
+support for IAM authentication, integration with secret manager
+
+
+=========================================
+
+AMAZON AURORA
+
+Compactible API for PostgreSQL and MySQL. used for seperation of storage and compute
+data is stored in 6 replicas accross 3 AZ. and highly available, self-healing and autoscaling
+has both read and write endpoint.
+same security, maintainance and monitoring features as RDS
+AURRORA IS SERVERLESS. for unpredictable, intemitent workload and no capapcity planning
+Aurora multi-master = for continous writes failover (high write availability)
+Aurora global = more than 16 db read instances in various region. less than 1sec storage replication.
+Aurora Machine Learning.= perform ML using the sagemaker
+Aurora database cloning. faster than snapshot.
+
+Amazon Aurora is a MySQL and PostgreSQL-compatible relational database. It features a distributed, fault-tolerant, 
+self-healing storage system that auto-scales up to 128TB per database instance. It delivers high performance
+ and availability with up to 15 low-latency read replicas, point-in-time recovery, continuous backup to Amazon S3, and replication across 3 AZs.
+
+===========================================
+
+ELASTICACHE
+Managed redis/memcache
+in-memory data store . sub millisecond latency
+supoort for clustering and multi-AZ read replica
+security: IAM, redis authy, KMS, SG
+backup/snapshot/point in time restore
+frequent read and less write.
+cannot use SQL for elasticache
+
+IF THE EXAM IS ASKING FOR CODE MODIFICATION TO CACHE IN YOUR APPLICATION, THEN ELASTICACHE IS A GOD CHOICE, OTHERWISE NOT A GOOD CHOICE.
+
+==========================================
+
+DYNAMO DB
+
+AWS proprietory technology. managed serverless database with millisecond latency.
+autoscaling and provisioned on-demand capacity
+can replace elasticache for a key/value store
+highly available, multi AZ
+DAX cluster for read cache
+security is done through IAM
+automated backup for PITR (35days)
+export to S3 without using any read capacity unit (RCU), import from S3 without any WCU
+Great to rapidly explore schema
+
+=======================================
+
+AMAZON S3
+
+key/value for object
+great for large objects
+IAM security, bucket ploicy, ACL, object lock for glacier
+serverless and max object size is 5TB
+
+PLS VISIT S3 NOTE FOR FULL DETAILS
+
+
+======================================
+
+DOCUMENTDB (MONGODB)
+
+no SQL database
+used to store query and index (JSON DATA)
+automatically scale workload with millions of request per second
+storage grows automatically in increment of 10GB up to 64TB
+
+
+========================================
+
+AMAZON NEPTUNE
+
+fully managed graph database
+a popular graph dataset is social network
+replication accross 3 AZ
+great for knowledge graph (wikipedia), fraud detection and social network
+
+=====================================
+
+AMAZON KEYSPACES (FOR APACHE CASANDRA)
+Open source noSQL distributed database.
+serverless, scalable, highly Available and fully managed by AWS
+thousands of request per second
+on-demand and auto scaling
+PITR
+
+ANYWHERE YOU SEE APACHE CASANDRA, THINK ABOUT KEYSPACES.
+
+=========================================
+
+AMAZON QLDB
+amazon quantum ledger database
+a ledger is a book recording financial transactions 
+used to review history made bto your application data over time
+it is immutable. once written cannot be modified. this is crptographically modified.
+
+ANY TIME YOU SEE FINANCIAL TRANSACTION AND LEDGER, THINK QLDB
+
+=======================================================
+
+AMAZON TIME STREAM
+Fully managed serverless, time series database
+autoscaling
+1000s faster and cheaper than RDS
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

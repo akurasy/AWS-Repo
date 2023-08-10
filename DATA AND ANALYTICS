@@ -1,0 +1,128 @@
+ATHENA
+
+Athena is a serverless query service used to analyse data stored in amazon S3 bucket.
+use standard SQL query language to analyse the file.
+supports CSV, JSON, ORC, Avro, and Parquet
+5$ per TB scanned
+common used for amazon 	quicksight reporting/dasgboard
+
+EXAM TIP: anytime you need to analyse your data on S3 using serverless query service, think ATHENA
+
+ATHENA - FEDERATED QUERY
+Uses data source connector that runs on AWS Lambda to run federated queries (e.g cloudwatch logs, dynamoDB, RDS)
+
+
+===================================================
+
+REDSHIFT
+
+Based on PostrGRES technology , but not good for OLTP
+Columnar storage of data. parallel query engine
+10X better than other data warehouse
+pay as you go 
+use for intense data warehousing with many queries, use redshift instead of athena.
+
+LOADING DATA INTO REDSHIFT
+amazon kinesis
+data firehose
+
+amazon kinesis and data firehose is used to load data into redshift using the S3 copy command.
+
+===================================================
+
+AMAZON OPENSEARCH
+survivor of amazon elasticsearch
+with opensearch, you can search any fields
+does not support SQL, but can be used via plugin
+security: IAM, COGNITO, ENCRYPTION
+
+You can use the kinesis data firehose or Lambda function to transfer data to opensearch.
+
+=============================================
+
+AMAZON EMR
+Amazon Elastic Map Reduce
+creates Hadoop cluster to create and analyse a vast amount of data 
+usecase: data processing, machine learning
+
+EMR NODE TYPES
+MASTER NODE: manages node and manage health
+CORE NODE: run task and store data
+TASK NODE: just to run task
+
+=================================================
+
+AMAZON QUICKSIGHT
+
+Serverless machine learning powered business intelligence service that creates interactive dashboards
+usecase: business analytics, business visualisation, get business insight using data
+
+DASHBOARD AND ANALYSIS
+define users and groups. these users and groups only exist in quicksight and not IAM
+You can share the analysis of your dashboard with users and groups
+to share dashboard, you must first publish it
+users who see the dashboard can also see the underlying data.
+
+==================================================
+
+
+AWS GLUE
+managed extract, transform and load (ETL)service
+used to prepare and trasform data for analysis
+fully serverless service.
+
+=============================
+
+AWS LAKE FORMATION
+
+data lake = central place to have all your data for analytics purposes
+it automates many complex manual steps
+combine both structured and unstructured data in the data lake
+
+======================================================
+
+KINESIS DATA ANALYTICS
+FOR SQL APP
+to provide real-time analysis for SQL statement and can also reference data from amzon S3
+real time analytics on kinesis data stream and firehose
+fully manager service and serverless
+autoscaling and pay as you go.
+real time dashboard and real time metrics
+
+kinesis data stream vs kafka
+
+KDS 
+1mb limit
+data streams with shard
+TLS inflight encryption
+KMS at rest encryption
+
+KAFKA (MSK)
+1mb default, configue for higher up to 10mb
+uses partition
+plaintext or TLS encryption in transit
+KMS at rest encryption
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
