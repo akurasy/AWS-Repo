@@ -1,7 +1,7 @@
 CHOOSING THE RIGHT DATA BASE
 
-We have a lot of managed databases in AWS. databases are chiosen based on the following required architecture;\
-read heavy, write heavy, throughput, will it chnage, doese need scaling or fluctuate during the day
+We have a lot of managed databases in AWS. databases are chosen based on the following required architecture;
+read heavy, write heavy, throughput, will it change, does it need scaling or fluctuate during the day
 how much data to be stored and how long, will it grow, how are they accessed ?
 data durabilty. source of truth for the data
 latency requirements, data model
