@@ -29,7 +29,7 @@ Amazon SQS allows you to retain messages for days and process them later, while 
 SQS FIFO QUEUE
 first in first out (FIFO) 
 ordering messages in the queue
-300 messages per sec
+300 messages per sec and max of 3000 messages per sec with batch operation. 
 exactly one send capability
 
 =========================================
