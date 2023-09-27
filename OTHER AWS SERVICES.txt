@@ -1,0 +1,81 @@
+
+CLOUD FORMATION
+this is a declarative way of outlining your AWS infrastructure, for any resources. (most of them are supported)
+
+cloud formation is IAC
+
+===========================
+
+AMAZON SIMPLE EMAIL SERVICE (SES)
+
+fully managed service that allows you to send email securely, globally at scale. (to send email to customers and bulk email for marketing)
+allows inbound/outbound email.
+it provides statistic about the email.
+
+===================================
+
+AMAZON PINPOINT.
+scalable-2-way (inbound/outbound) marketing
+supports email, push, sms, voice and in-app messaging.
+use to send marketing/transaction bulk messages.
+
+
+============================================
+
+SYSTEM MANAGER = SSM SESSION MANAGER
+allows you to start a secure shell on your EC2 and on premise server
+no SSH access, bastion host and ssh key is required
+no port 22 needed (better security)
+
+======================================
+
+AWS COST EXPLORER
+
+Used to visualised, understand and managed your aws costs and usage over time.
+create custom report on cost and data usage
+forecast usage up to 12 months. 
+used in predicting cost outcome.
+
+====================================
+
+ELASTIC TRANSCODER
+
+Used to convert media files in amazon S3 into media file required by customer playback device (phones .....)
+
+===============================
+
+AWS BATCH
+used to run thousands of computing batch jobs on AWS
+a batch job is a job with a start and a end. 
+they are fine as docker images and can run on ECS.
+
+============================================
+
+AMAZON APPFLOW
+
+fully managed service that allows you to transfer data between Software-as-a-Service (SaaS) and AWS.
+
+
+AWS AMPLIFY - Helps you to deploy web or mobile application. think of amplify as the elastic beanmstalk for web and mobile applications.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

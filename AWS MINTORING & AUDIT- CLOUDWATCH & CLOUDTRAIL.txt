@@ -1,0 +1,157 @@
+MONITORING INTRODUCTION
+monitoring ensures that your application is running in the right way and you can see the logs and audit.
+
+
+================================
+
+CLOUDWATCH METRICS
+
+Cloudwatch provides a metrics for your AWS services
+METRICS are just the parameters/variables you want to monitor
+
+cloudwatch metric stream helps you to stream cloudwatch metrics to a destintion of your choice with near real-time delivery
+
+destination = kinesis data firehose
+
+EXAM TIP: cloudwatch metrics helps you send RDS autoscaling status to kinesis data firehose. 
+
+=================================
+
+CLOUDWATCH LOGS
+perfect place to store your application logs
+
+cloudwatch logs can be sent to 
+S3, data stream, firehose, AWS lambda, opensearch
+logs are encrypted by default.
+
+sources of logs : SDK, vpc, ECS, beanstalk, lambda, API Gateway, cloudtrail, Route53
+
+
+Cloudwatch log insights == helps ypu to specify your querry. search and anaylse data in logs
+
+===============================================
+
+CLOUDWATCH AGENT AND CLOUDWATCH LOGS AGENT
+
+By default, no logs from your EC2 instance is sent to your cloudwatch
+you need to run a cloudwatch agent on your ec2 to push the log files you want.
+ec2 needs to have the necessary IAM role
+
+unified agent is better than logs agent because it can do both metrics and logs
+
+================================================
+
+CLOUDWATCH ALARM
+
+ALARMS are used to trigger notifications for any  metrics
+
+alarm targets -- stop/terminate EC2, trigger autoscaling, send notication to SNS
+
+
+EC2 INSTANCE RECOVERY used to recover your instance when an instance failed. 
+
+you get the same IP, metadata, placement group, EIP and private IP when the instance is recovered.
+
+Alarms can be created based on cloudwatch logs metrics filter
+
+to test alarm and notifications, set the alarm state using the CLI command 
+
+aws cloudwatch set-alarm-state --alarm-name "myalarm" --state-value ALARM --state-reason "testing purposes" 
+
+====================================================
+
+EVENTBRIDGE OVERVIEW
+Used to schedule a cron job
+reacts to an event to schedule an action.
+the event bus carries the event to event bus, then to partner even bus, then finally to custom event bus.
+event buses can be accessed by other AWS account using resource based policy.
+you can archive events sent to event bus.
+ability to replay archive evnts
+
+USECASE: It is used to aggregate all resources in the AWS organisation into a single AWS account per AWS region.
+
+=============================================
+
+CLOUDWATCH CONTAINER INSIGHT AND OPERATIONAL VISIBILITY
+
+Collects , summarises and aggregate logs and metrics from containers
+
+
+cloudwatch lambda insights is a monitoring and troubleshooting solution for serverless apps running on AWS Lambda
+
+cloudwatch contributor insights ;
+helps you find top talkers and identify who is impacting performance
+analyse log data and create time series that display contributor data.
+
+cloudwatch application insight;
+provides automated dashboard that shows potential problems with monitored applications , to help isolate ongoing issues
+
+powered by sagemaker
+
+
+
+====================================================================
+
+
+CLOUD TRAIL OVERVIEW
+
+Provides governance, compliance, and audit for your AWS account
+cloudtrail is enabled by default
+
+IF A RESOURCE IS DELETED IN AWS AND YOU WONDERING WHO DID IT, INVESTIGATE CLOUDTRAIL FIRST.
+
+Cloudtrain Events
+management events = tells you the operations that are performed on your AWS account. can seperate read event from write event.
+
+data events= are not logs. reports S3 events, Lambda events.
+
+
+CLOUDTRAIL INSIGHTS= This helps to detect unsual activity in your AWS account
+
+cloudtrail event retention = helps you to store events for 90days in cloudtrail
+
+
+TO KEEP EVENTS BEYOND THIS PERIOD, LOAD THEM TO S3 AND THEN USE ATHENA.
+
+======================================================
+
+AWS CONFIG
+
+helps with audting and recording compliance of your AWS resources
+helps record configuration and changes over time.
+AWS CONFIG is a per region service.
+CONFIG is not a free tier.
+
+Config rules:
+can use AWS config rules (up to 75)
+can make custom config rules (defined by a lambda function)
+
+============================================================
+
+CLOUDWATCH VS CLOUDTRAIL VS AWS CONFIG
+
+CLOUDWATCH:
+	Performance monitoring (metrics, cpu, network) and dashboard
+	eventa and alerts
+	log aggregration and analysis
+
+CLOUDTRAIL:
+	Record API calls made within your account by users
+	can defile trail for specific resources
+	it is a global service.
+
+AWS CONFIG:
+	record configuration changes
+	evaluate resources against compliance policy
+	get timeline of changes and compliance.
+ 
+
+
+
+
+
+
+
+
+
+

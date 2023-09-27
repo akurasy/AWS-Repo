@@ -1,0 +1,112 @@
+
+EVENT PROCESSING IN AWS
+
+In event processing in AWS you can use the following:
+SQS and Lambda
+SQS FIFO and lambda = SQS FIFO helps messages to be processed in order.
+SNS + LAMBDA= SNS sends the message asynchronously to a Lambda function. the lambda processes, if it fails, it retries 3 times
+message is discard after the 3rd time or you can further attach an SQS to the Lambda after receiving messages from SNS topic.
+
+FANOUT PATTERN: TO DELIVER DATA TO MULTIPLE SQS
+
+SDK (put) ====> SNS (subscribe)=====> MULTIPLE SQS
+the multiple SQS are going to be subscribers of our SNS topic.
+
+
+S3 EVENTS NOTIFICATION
+used to generate thumbnails of images uploaded to S3.
+EVENTS HAPPENED IN AMAZON S3 AND CAN BE SENT TO SNS, SQS AND LAMBDA
+
+S3 EVENTS NOTIFICATIONS WITH AMAZON EVENTBRIDGE
+events are first sent to amazon S3 bucket for processing, all events are sent to eventbridge, and be sent to 18 AWS services as destination.
+
+
+API GATEWAY  - AWS SERVICE INTEGRATION
+
+Client (requests)======  API Gateway (send)======  kinesis Data Streams (records)======  Kinesis Data Firehose (store)======= Amazon S3
+
+==========================================================
+
+CACHING STRATEGY IN AWS
+
+client === Cloudfront (caching at the edge) ==== API Gateway =====  app logic/EC2 (no caching)========== redis mamcache DAX or can be sent to amazon rds (no caching here)
+client === cloudfront at edge (caching at edge) ======= s3 (no caching on S3)
+
+=======================================================
+
+BLOCKING AN IP ADDRESS IN AWS
+
+The first point of security is the NACL.
+at the NACL level, you can create a deny rule to block a specific IP address.
+pls note there is no deny rule at the SG level. only allow rule.
+
+blocking an IP with NLB
+the NLB does not have a SG. so all traffic goes through it to the application. the best bet is to configure the security at the NACL level
+
+
+BLOCKING IP ADDRESS - WAF + ALB
+
+WAF = web application firewall. the way to filter incoming IP is to add WAF on the ALB and WAF filters the incoming IP addresses.
+
+BLOCKING IP ADDRESS - WAF + ALB + CLOUDFRONT
+if the cloudfront is put infront of the ALB, install WAF on the cloudfront to filter all IP addresses.
+
+PLS NOTE IF CLOUDFRONT IS INVOLVED IN YOUR ARCHITECTURE, NACL WILL NOT BE HELPFUL IN BLOCKING IP, BECAUSE THE CLIENT TALKS DIRECTLY WITH THE CLOUD FRONT 
+WHICH IS IN FRONT OF THE ALB KEPT INSIDE THE VPC SUBNET AND NACL IS ONLY ACTIVE AT THE SUBNET LEVEL.
+
+
+===================================================
+
+HIGH PERFORMANCE COMPUTING (HPC) IN AWS
+
+DATA TRASNFER AND MANAGEMENT
+
+AWS DIRECT CONNECT: transfer data over a private network
+SNOWBALL OR SNOWMOBILE : to move petabytes of data to cloud
+AWS DATASYNC= this is an agent installed on on-premise server and it helps us to move data between onpremise and S3, EFS, FSx for windows.
+
+COMPUTE AND NETWORKING
+EC2 instances. CPU AND GPU optimised
+EC2 placement groups = cluster for good network performance. (when we have multiple EC2 that talks to each other)
+
+
+EC2 ENHANCED NETWORKING: high throughput and low latency
+popularly used is the ELASTIC NETWORK ADAPTER (ENA) up to 100Gbps
+
+you can also use the ELASTIC FABRIC ADAPTER (EFA). EFA is an improved ENA. Only works for linux.
+EFA leverages the message passing interface (MPI). MPI bypasses the underlying linux OS to provide low-latency, reliable transport.
+
+
+STORAGE
+Instance attached storage (EBS). 
+Network storage = S3, EFS, FSx for lustre.
+
+AUTOMATION AND ORCHESTRATION
+AWS Batch= use to run a single job that spans multiple EC2 instances.
+
+AWSParallel Cluster. open-source cluster management tool to deploy HPC on AWS.
+automate creation of VPC, subnets, cluster types and instance types.
+ability to enable EFA on the cluster
+
+
+==============================================================
+
+EC2 INSTANCE HIGH AVAILABILITY
+
+creating a standby instance to be promoted to the primary instance from a lambda call attached to the cloudwatch when an invent is trigerred.
+autoscaling group. 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

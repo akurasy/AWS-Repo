@@ -1,0 +1,344 @@
+
+ UNDERSTANDING CLASSLESS INTER-DOMAIN ROUTING (CIDR) - IPV4
+
+CIDR = is a method of allocating IP addresses
+	used in security group rule and AWS networking in general.
+
+a CIDR consists of two components. 
+
+- Base IP = example; 10.0.0.0
+- subnet mask = example; /32  ..... can take two forms : /8 or 255.0.0.0
+
+UNDERSTANDING CIDR - SUBNET MASK
+
+192.168.0.0/32 = allows for 1 IP (2^0) = 192.168.0.0
+192.168.0.0/31 = allows for 2 IP (2^1) = 192.168.0.0 - 192.168.0.1
+192.168.0.0/30 = allows for 4 IP (2^2) = 192.168.0.0 - 192.168.0.3
+192.168.0.0/29 = allows for 8 IP (2^3) = 192.168.0.0 - 192.168.0.7
+192.168.0.0/28 = allows for 16 IP (2^4) = 192.168.0.0 - 192.168.0.15
+192.168.0.0/27 = allows for 32 IP (2^5) = 192.168.0.0 - 192.168.0.31
+192.168.0.0/26 = allows for 64 IP (2^6) = 192.168.0.0 - 192.168.0.63
+192.168.0.0/25 = allows for 128 IP (2^7) = 192.168.0.0 - 192.168.0.127
+192.168.0.0/24 = allows for 256 IP (2^8) = 192.168.0.0 - 192.168.0.255
+
+192.168.0.0/16 = allows for 65,536 IP (2^16) = 192.168.0.0 - 192.168.255.255
+
+192.168.0.0/0 = allows for all IP addresses = 0.0.0.0 - 255.255.255.255
+
+/32 = no octet can chnage
+/24 = last octet can change
+/16 = last two octets can change
+/8 = last three octets can change
+/0 = all octets can change.
+
+
+little exercise
+192.168.0.0/24 = ?
+192.168.0.0/16 = ?
+
+https://www.ipaddressguide.com/cidr  = website to help you calculate your ip and cidr block.
+
+
+
+PRIVATE VS PUBLIC IP
+Private IP can only have the follwoing values 
+10.0.0.0 - 10.255.255.255 (10.0.0.0/8)  ====== for big network
+172.16.0.0 - 172.31.255.255 (172.16.0.0/8) ===== AWS default VPC in that range
+192.168.0.0 - 192.168.255.255 (192.168.0.0/16) ==== home networks
+
+All the rest of the other IP addresses on the internet are public IPs.
+
+========================================================
+
+VPC IN AWS - IPV4
+VPC = virtual private cloud
+you can have multiple vpc in a single aws region (max of 5 - soft limit)
+max CIDR per VPC =5; for each CIDR,
+min size is /28 (16 IP addresses)
+max size is /16 (65536 IP addresses)
+
+========================================
+
+VPC SUBNET -  IPV4
+
+AWS reserves 5 IP addresses. (first 4 and last 1)
+these 5 IP addresses are not available for use and cannot be assigned to an EC2 instance
+
+example: if CIDR block is 10.0.0.0/24, then the reserved IPs are:
+10.0.0.0= network address
+10.0.0.1= reserved by AWS for the VPC router
+10.0.0.2 = reserved for AWS for mapping to amazon-provided DNS
+10.0.0.3 = reserved for future use
+10.0.0.255 = network broadcast address. 
+
+
+EXAM TIP: if you need 29 IP addresses for EC2 instances:
+you can't choose a subnet of size /27 (32 IP addresses; 32 - 5 (reserved) = 27 < 29)
+you need to choose subnet of size /26 (64 IP addresses; 64 - 5 (reserved) = 59 < 29)
+
+===================================================
+
+INTERNET GATEWAY AND ROUTE TABLES.
+
+IGW
+allows resource to connect to the internet
+it scales horizontally. highly available and redundant
+must be created seperately from a VPC
+one VPC can only be attched to one IGW and vice-versa.
+IGW on their on does not allow intenet access
+the route table must be edited.
+
+PLS NOTE: IGW IS ALWAYS CONNECTED TO THE PUBLIC SUBNET VIA THE ROUTE TABLE.
+
+
+HOW TO USE THE IGW
+- create a VPC
+- create private and public subnets
+- create ec2 and attach it to a public subnet == check if you can use ec2 instant connect to ssh into this instance. it will returned failed, so we use IGW.
+- create IGW and attach to a VPC
+- create a route table for both your private and public subnets
+- for Public RT, edit subnet association and add the public subnet create. Do same for private RT.
+- for pub RT, click on action, edit route to add a second route.
+- destination = 0.0.0.0/0 ; target = IGW and select the IGW created.
+- now connect to the EC2 instant connect again and it will work
+
+the above is to create internet connectivity for the public instance in your VPC using IGW.  
+
+==============================================
+
+BASTION HOSTS
+
+Bastion hosts help users to connect to the private ec2 instance over the internet.
+
+bastion hosts are ec2 instance with the security group called BastionHost-SG. they are kept inside the public subnet.
+port 22 must be opened in the bastianhost-SG, and also must be enabled on the private instance we are connecting to. 
+the idea is to first connect to the bastian hosts using ssh. 
+and the bastion host helps us ssh into the private subnet using the private IP of the instance we are connecting to.
+
+
+===================================================
+
+NAT INSTANCE (OUTDATED BUT STILL COMES AT THE EXAM)
+
+NAT = Network Address Translation
+allows ec2 instance in your private subnet to connect to the internet
+must be launched in public subnet
+must disable the source destination check
+must have an elastic IP
+the route table must be configured to route traffic from the private subnets to the NAT instance.
+
+NAT LAB
+create an instance called NATinstance
+select to browse ami and search for nat, community. select any ami with nat
+
+security group name = nat-instance-sg 
+allowed port 22, 80, 443(https), all icmp4.
+
+network edit = select vpc, select public subnet.
+launch the instance. 
+when launched, select the NAT instance, action, network, Change Source / destination check and tick the box for stop.
+go to the route table of the private RT. edit route. source = anywhere, target = instance and select the nat instance.
+
+ssh into the Private instance from the bastion-hosts and ping google.com from the private instance.
+
+
+=============================================
+
+NAT GATEWAY
+AWS managed NAT
+created in a specific AZ with elastic IP
+Cannot be used by an ec2 instance in the same subnet
+requires an internet gateway (private subnet ========> nat gateway ======> IGW)
+resilient within a single AZ
+must create multiple NAT in multiple AZ for fault-tolerance
+
+
+===================================================
+
+SECURITY GROUP AND NACL.
+
+NACL are like firewalls that controls traffic to and from the subnets.
+one NACL per subnet. new subnets are assigned the default NACL
+you define NACL rules:
+	rules have a number (1 to 32766). higher precedence with a lower number.
+	first rule match will drive the decision.
+	example: if you define 100 allow 10.0.0.0/32 and 200 deny 10.0.0.0/32.
+	address will be allowed because 100 has a higher precedent over 200.
+	the last rule is an asterisk (*) and denies a request incase of no rules match
+`	AWS recommends adding rules in increment of 100
+
+newly created NACL will deny everything by default
+NACL are great way of blocking a specific IP address at the subnet level.
+
+DEFAULT NACL allows everything out and everything in. accepts everything inbound/outbound within the subnet it is associated with.
+
+EPHEMERAL PORTS are refers to as the client ports. these ports are ephemeral because they remain alive until the connection is timed out.
+
+==============================================================
+
+VPC PEERING
+
+private connect two VPC's using AWS' network
+make them behave as if they were bin the same network
+must not have overlapping CIDR
+VPC peering are not transitive. must be enabled on each vpc
+you must update rout tables in each vpc subnets to ensure EC2 instances can communicate with each other.
+
+=======================================================
+
+VPC ENDPOINT
+
+Every AWS service is publicly exposed
+VPC ENDPOINT helps you connect to your AWS service directly using the private network without going through the public internet.
+they are redundant and scale horizontally
+they remove the need of IGW, NATGW, to access AWS services
+In case of issues:
+1. check DNS setting resolution in yur vpc
+2. check route tables.
+
+TYPES OF ENDPOINT
+
+Interface endpoints
+uses the ENI as an entry point (must attach security group)
+
+Gateway endpoints
+provisions a gateway that must be used as target in the route table. (does not need SG)
+supports both S3 and DynamoDB.
+free.
+S3 and DynamoDB are end points for your VPC, These two services have a VPC Gateway Endpoint (remember it),
+all the other ones have an Interface endpoint (powered by Private Link - means a private IP).
+
+GATEWAY OR INTERFACE EDNPOINT FOR S3 ? = GATEWAY is more likely to be preffered all the time at the exam. 
+INTERFACE ENDPOINT IS PREFFERRED when access is required from on-premise (site-to-site VPN or direct connect), a diffrent vpc or a different region.
+
+==========================================================
+
+VPC FLOW LOGS
+Capture information about IP going into your interfaces
+helps to monitor and troubleshoot connectivity issues
+flow log data can go to S3, cloudwatch logs, and kinesis data firehose.
+
+when you create a log on ATHENA, it helps you analyse the details of your log in tabular format.
+
+=============================================================
+
+
+SITE TO SITE VPN: VIRTUAL PRIVATE GATEWAY, AND CUSTOMER GATEWAY.
+
+SITE TO SITE VPN:
+Used to connect aws to a corporate data center.
+site-to-sit VPN needs two things 
+1. virtual private gateway = this uses aws VPN connection
+2. customer gateway =  on-premise. it uses the public IP route table of your customer gateway
+if it's behind a NAT device thats enabled on NAT-traversa (NAT-T) use the public IP of the NAT device.
+
+EXAM NOTICE : 
+- enable the route propagation for the virtual private gateway in the route table that is associated to your subnet
+- if you need to ping an EC2 instance from your on-premise, then you must enable the all ICMP protocol on the inbound of your security.
+
+AWSVPN CLOUDHUB = is to provide secure communication between AWS and multiple customer gateway (multiple sites). if you have multiple VPN connections.
+
+
+SUMMARY
+before you create a site to site VPN, you must first create a customer gateway ( this is an onpremise server). then create a virtual private gateway and use 
+site to site VPN to connect the two together.
+
+===============================================================
+
+DIRECT CONNECT (DX)
+provides a dedicated private connection from your remote NETWORK to your VPC.
+supports both IPV4 and IPV6
+Hybrid environment (on-premise + cloud)
+if you want to setup a direct connect in multiple vpc in difrrent region in the same account, you must use direct connect gateway.
+
+connetion types = dedicated connection and hosted connection
+
+FOR MAXIMUM RESILIENCE, SET UP FOUR CONNECTIONS IN TWO LOCATIONS. i.e two connections per location.
+
+
+===========================================================
+
+TRANSIT GATEWAY (in my own language, remember jenkins)
+
+used to connect thousands of VPC with your on-premise network. this resolves the issue of network topologies
+you can also connect multiple vpc, direct connect gateway, and coustomer gateway (using VPN connection) on transit gateway
+regional resource but can work cross-region
+route table limits which vpc can talk to each other.
+ITS THE ONLY GATEWAY THAT SUPPORTS IP MULTI-CAST. if you see IP multi-cast in your exam, just know it's transit gateway
+transit gateway is also used to increase the bandith of your VPN connection using ECMP. (equal cost multi path routing)
+
+============================================================
+
+VPC TRAFFIC MIRRORING
+allows you to capture and inspect network traffic in your vpc
+to do so, your route traffic to a security device you are managing.
+pls do not mistake this for VPC flow logs, while vpc flow logs captures traffic, vpc traffic mirrioring copy the traffic to another security device
+
+====================================================
+
+
+AWS VPN CloudHub allows you to securely communicate with multiple sites using AWS VPN. 
+It operates on a simple hub-and-spoke model that you can use with or without a VPC.
+
+
+====================================================
+
+IPV6 FOR VPC
+
+IPV4 is designed to provide 4.3billion IP addresses abd it will be exhausted soon.
+IPV6 is the successor of ipv4
+Its designed to provide 3 x 10^38 unique IP addresses.
+every IPV6 address is public and internet routable. (no private range)
+
+IF YOU HAVE IPV4 AND IPV6 IN YOUR VPC AND YOU CANNOT CREATE A NEW IPV4 ON YOUR EC2 , IT MIGHT BE BECAUSE YOU HAVE EXHAUSTED THE IP RANGE IN YOUR CIDR BLOCK. THE 
+SOLUTION IS TO CHANGE YOUR CIDR VALUE TO ACCOMODATE MORE IPs
+
+==================================
+
+EGRESS ONLY INTERNET GATEWAY
+similar to NAT GW, but are used only for IPV6
+allows instance in your vpc outbound connection
+
+
+===============================================
+
+VPC SUMMARY
+
+CIDR = IP range
+VPC = virtual private cloud
+subnets = tied to an AZ. we define a CIDR
+internet gateway = at the VPC level, provide IPV4 and IPV6 internet access.
+route tables= must be edited to add routes from subnets, IGW, VPC peering connections, VPC endpoints.........
+Bastion Host = public EC2 instance to SSH into the instance of our private subnets
+NAT instances= gives internet access to EC2 instance in your rpivate subnets. you must select a NAT AMI to use this. old, must be setup in a public network
+NAT Gateway= managed by AWS to provide scalable internet access to your private EC2 instances. allows only IPV4
+NACL= stateless. defines inbound abd outbound at the subnet level. PORTS ARE EPHEMERAL
+security group= stateful. and operates at the EC2 instance level.
+VPC peering= to connect two more VPCs. no overlapping CIDR, Trasnitive.
+VPC ENPOINT= provides private access to AWS resources. (S3, DynamoDB. SSM, cloud formation .......
+VPC flow logs = can be setup at the VPC/ENI/SUBNET level for accept and reject traffic. helps to identity attck. analyze using athena or cloudwatch log insight.
+site to site VPN = to connect your VPC to onpremise data center.
+AWSVPN Cloudhub = to connect multiple vpc to on-premise data center.
+VPC direct connect= privately connect your vpc to your onpremise data center. it does not go over the public internet.
+direct connect gateway = is used to setup many vpc in different aws region.
+AWS privatelink/ VPC endpoint services = used to privately connect your own vpc to customer's vpc created. mostly used with NLB and ENI. No NAT, no IGW, RT .....
+transit gateway = connection for your VPC, DX, and VPN.
+traffic mirroring = copy traffic from ENI for further analysis
+Egress only IGW = your IPV6 outbound rule. like NAT gateway
+
+
+
+====================================
+
+AWS NETWORK FIREWALL
+
+protects our entire VPC from layer3 to layer 7 protection.
+
+it uses the gateway load balancer.
+
+
+
+
+
+
+

@@ -1,0 +1,109 @@
+
+AWS ORGANIZATION OVERVIEW
+
+Global service that allows you to manage multiple AWS accounts.
+the main account is the management account
+other accounts are member accounts
+consolidated billing accross all account, yet single payment method
+price benfit for aggregate usage. discount on some resources
+share rserved instance
+
+security = service control policy (SCP)
+scp example = blocklist and allowlist
+
+==============================================
+
+IAM ADVANCED POLICIES
+aws:PrincipalorgID can be used to restrict account of users who are members of aws organisation
+
+IAM ROLES VS RESOURCE BASED POLICIES
+
+cross account: you can attach a resource based policy for an api in a cross account OR using a role as a proxy.
+
+When you assume a role, you give up your original permission and take up the permission assign to that role.
+
+resource based policy, principal doesnt give up origninal his original permissions
+
+aws:RequestedRegion policy is an  IAM condition key you can use only to allow API calls to a specified AWS region
+
+When configuring permissions for EventBridge to configure a Lambda function as a target you 
+should use RESOURCE-BASED POLICY but when you want to configure a Kinesis Data Streams as a target you should use IDENTITY-BASED POLICY
+
+===========================================
+
+IAM PERMISSION BOUNDARIES
+IAM permission boundaries are supported for users and roles (not for groups)
+it is used to set the maximum level of permission for an IAM entity.
+
+when you have an exclusive deny, you cannot perform any other task on that statement.
+
+
+===============================================
+
+AWS IAM IDENTITY CENTER (SUCCESSOR TO AWS SINGLE SIGN-ON)
+
+The idea of this is to use one single login for all your aws accounts in aws organisation
+
+identity providers
+built-in identity store in AWS IAM identity center
+3rd party: active directory (AD), OneLogin, Okta.... 
+
+
+=========================================
+
+ACTIVE DIRECTORY SERVICES
+
+microsoft AD found on any windows server with ADDS
+database of objects: users, account, computer, printers, SG
+centralsied security management, create account, assign permissions
+objects are organised in trees, a group of trees is called forest.
+
+AWS managed microsoft AD
+create your own ID in AWS, manage users locally, supports MFA.
+establish a trust connection between your on premise AD
+
+AD CONNECTOR
+Directory gateway to redirect to on premise AD. supports MFA.
+users are managed on the on premise AD
+
+SIMPLE AD 
+AD compactible managed directory on AWS, 
+cannot be joined with onpremise AD.
+
+
+=============================
+
+AWS CONTROL TOWER
+easy way to setup and govern a secure and compliant multi-account AWS environment based on best practices.
+AWS control tower uses AWS organisation to create accounts.
+
+benefits:
+automate account with a few clicks
+automate ongoing policy mgt
+
+aws control tower guardtrail provides ongoing governance for your control tower environment.
+
+
+====================================================
+
+You can use organizational units (OUs) to group accounts together to administer as a single unit. This greatly simplifies the management of your accounts.
+For example, you can attach a policy-based control to an OU, and all accounts within the OU automatically inherit the policy.
+
+You can use OUs to organize your non-production environments in a couple ways.
+
+Sometimes your process for developing and testing changes involves workload environments that have fundamentally different access
+policies or ways in which you manage and apply foundational resources. In these cases, it makes sense to create distinct OUs to support these diverse requirements.
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,38 @@
+SIX PILLAR OF ARCHITECTURE FRAMEWORK (CROPSS)
+1. operational excellence
+2. security
+3. reliability
+4. performance efficiency
+5. cost optimization
+6. sustainability
+
+===============================
+
+AWS TRUSTED ADVISOR
+no need to install anything
+it is a high level aws account assessment
+
+analyze your aws account and provide recommendation based on 5 categories.:
+COST OPTIMIZATION
+PERFORMANCE
+SECURITY
+FAULT TOLERANCE
+SERVICE LIMITS
+
+
+7 CORE CHECKS OF TRUSTED ADVISOR (basic and developer support plan)
+
+S3 bucket permission,
+security groups: specific unrestricted port
+IAM use
+MFA for root account
+EBS public snapshot
+RDS public snapshot
+servive limits
+
+
+5 FULL CHECKS (business and enterprise support plan)
+ability to setup cloudwatch alarm when limit is reached
+programmatic access using the AWS Support API
+
+=================

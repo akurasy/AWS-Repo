@@ -1,0 +1,149 @@
+Amazon Rekognition
+
+• Find objects, people, text, scenes in images and videos using ML
+• Facial analysis and facial search to do user verification, people counting
+• Create a database of “familiar faces” or compare against celebrities
+
+Use cases:
+• Labeling 
+• Content Moderation
+• Text Detection
+• Face Detection and Analysis (gender, age range, emotions…)
+• Face Search and Verification
+• Celebrity Recognition
+• Pathing (ex: for sports game analysis
+
+AMAZON REKOGNITION ----- CONTENT MODERATION
+used to detect contents that are inappriopriate, unwanted or offensive
+used in social mdeia e-commerce, advertisement, e.t.c for a safe user experience
+help comply with regulations
+
+
+===========================================
+
+AMAZON TRANSCRIBE OVERVIEW
+
+helps you convert speach into text and uses the automatic speak recognition (ASR)
+
+========================================
+
+AMAZON POLLY.
+
+POLLY is the opposite of transcribe. it translate text into speech.
+
+uses speech synthetic mark up language (SSML) for more customization
+
+==========================
+
+TRANSLATE OVERVIEW
+
+TRANSLATE allows you to localise content. and it is a natural and accurate language translator.
+
+
+==================================
+
+AMAZON LEX AND CONNECT (SAME TECHNOLOGY THAT POWERS ALEXA)
+LEX
+used for automatic speech recognition to convert speech to text
+help build chatbot or call center bot
+natural lanuage understanding to recognise the intent of text, callers.
+
+
+CONNECT
+receive calls, creates flow, cloud-based virtual contact center
+
+===============================
+
+AMAZON COMPREHEND
+natural lanuage processing (NLP)
+fully managed serverless service
+uses ML to find insight in text
+used to analyze what lead to a positive or negative experience.
+
+AMAZON COMPREHEND MEDICAL
+
+It detects and return useful information in unstructured clinical text.
+
+======================================
+
+SAGEMAKER OVERVIEW
+
+Fully managed service for developers and data scientists to build ML models
+machine learning process. predicting your exam score.
+
+sagemaker is basically for predictions based on the default machine learning model created. 
+
+=====================================
+
+AMAZON FORECAST
+fully managed services that uses ML to deliver accurate forcast
+example; predict the cost of a raincoat
+
+=======================
+
+AMAZON KENDRA
+
+A fully managed document search service powered by ML
+Extract answers from the document
+natural language search capability
+
+FROM THE EXAM PERSPECTIVE, WHEN YOU SEE DOCUMENT SEARCH SERVICE, THINK AMAZON KENDRA
+
+==================================
+
+PERSONALIZE OVERVIEW
+
+Fully managed service to build apps with real-time personalized recommendation  
+for eaxmple; user bought AWS CLOUD PRACTITIONER MATERIAL, RECOMMEND ON NEXT RESOURCES TO BUY
+same technology used by amazon.com
+
+ANYTIME YOU SEE MACHINE LEARNING RECOMMENDATIONS, THINK AMAZON PERSONALIZED 
+================================
+
+
+TEXTRACT OVERVIEW
+Use to automatically extract text, handwriting, data frok a scanned document using AI or ML
+extract data from forms and tables 
+used to process invoice or financial report.
+
+==========================================
+
+
+MACHINE LEARNING SUMMARY
+
+REKOGNITION = face labelling, celebrity recognition and face detection
+TRANSCRIBE = transcribe voice to text. example; subtitle
+POLLY = text to audio
+TRANSLATE = translation
+LEX = build conversation bot; chatbot
+CONNECT = cloud contact center
+COMPREHEND = natural language processing (NLP)
+SAGEMAKER = ML for every developers and data scientists
+FORECAST = build highly accurate forecast
+KENDRA = ML powered search engine
+PERSONALIZED = real-time personalized recommendations
+TEXTRACT = detect text and data in documents
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

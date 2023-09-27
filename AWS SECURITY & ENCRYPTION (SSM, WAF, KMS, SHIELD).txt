@@ -1,0 +1,225 @@
+
+ENCRYPTION 101
+
+ENCRYPTION IN FLIGHT (SSL) 
+Data is encrypted before sending and decrypted after receiving.
+SSL certificate helps with encryption (HTTPS). This protects you against the man in the middle attack.
+Encryption in flight ensures no MITM (Man In The Middle)attack can happen.
+
+
+SERVER SIDE ENCRYPTION (SSE) AT REST
+Data is encrypted after being received by the server
+Data is decrypted before being sent.
+stored in an encrypted form (data key)
+encryption/decryption key must be managed somewhere and server must have access to it (KMS)
+
+CLIENT SIDE ENCRYPTION
+Data is encrypted by the client and never decrypted by the server
+Data will be decrypted by the receiving client
+server should not be able to decrypt the data
+could leverage envelope encryption
+
+
+=========================================================
+
+AWS KMS (KEY MANAGEMENT SERVICE)
+
+NOTE: ANY TIME YOU HEAR AN ENCRYPTION FOR AWS SERVICES, IT IS MOST LIKELY KMS
+
+AWS manages encrption key for us
+fully integrated with IAM for authorization
+easy way to control access to your data
+able to audit KMS key usage using cloudtrail
+seamlessly integrated with most AWS services (EBS, S3, RDS, SSM)
+never write your secret in plane text, especially in your code
+
+TYPES OF KMS KEY
+
+KMS keys is the new name for KMS customer master key
+
+symmetric  (AES-256 KEYS)
+	Single encryption keys that is used to encrypt and decrypt
+	AWS services that are managed with KMS uses the symetric CMKs
+	you never get access to to the KMS keys unencrypted (must call KMS API to use)
+
+asymmetric (RSA & ECC key pairs)
+	public (encrypt) and private key (decrypt) pair.
+	used for encrypt/decrypt , or sign/verify operations
+	public key is downloadable, but you cannot use the private key unencrypted
+USECASE; encryption outside AWS for users who cant make API calls 
+
+AWS OWNED KEYS - SSE-S3, SSE-SQS, SSE-DDB (default key)
+
+COPYING SNAPSHOTS ACCROSS ACCOUNT
+-create a snapshot encryoted with your own key (CMK)
+-attach KMS policy to allow cross account access
+-share the encrypted snapshot
+-in target, create a copy of the snapshot , encrpt with a CMK in your account.
+-create a volume for the snapshot
+
+==================================================
+
+KMS MULTI REGION
+
+USECASE --- Global client side encryption,  encryption on global dynamo db, global aurora
+
+
+=========================================================
+
+S3 REPLICATION WITH ENCRYPTION 
+
+unencrypted and objects encrypted with SSE-S3 are replicated by default.
+objects encrypted with SSE-C (customer provided key) are never replicated
+objects encrypted with SSE-KMS you need to enable the option.
+
+============================================
+
+ENCRYPTED AMI SHARING PROCESS
+
+AMI is secured with KMS encrypted key from the source account 
+modify the image attribute of the key to add a launch permission which corresponds to the specified target AWS account.
+must share the KMS key used to create the snapshot that the AMI reference with the target account.
+IAM/USER in the target account must have the permissions to DescribeKey, ReEncrypted, CreateGrant, Decrypt.
+when launching an EC2 with the AMI, the target account can specify a new KMS key in its own account to reencrypt the volumes
+
+
+==========================================================
+
+SSM PARAMETER STORE OVERVIEW
+
+- It is a secure storage for configurations and secrets
+- optional seamless envryption using KMS
+- serverless, scalable, durable and easy SDK
+- version tracking of configurations / secrets
+- security through IAM
+- notifications with amazon event bridge
+- integration with cloud formation
+
+types = standard (4kb) and advanced tier (8kb)
+
+parameter policies (advanced)= allows you to assign a TTL on parameters.
+				attach multiple policies at a time
+				
+===========================================================
+
+AWS SECRETS MANAGER OVERVIEW
+
+Meant for storing secrets
+capability to force the rotation of secret every xdays
+automate generation of secrets on rotation (uses Lambda)
+integration with amazon RDS
+
+AWS SECRETS MANAGER MULTI REGION SECRETS
+replicate escrets accross multiple regions 
+secret manager keeps secrets in sync with the primary secret
+ability to promote  read replica secret into a standalone secret.
+USECASE: multi region app, disaster recovery, multi-region DB
+
+===================================================
+
+
+AWS WEB APPLICATION FIREWALL (WAF)
+WAF is used to protect your web app from common web exploits (layer 7)
+layer 7 is HTTP (vs layer 4 TCP/UDP)
+
+deploy on: (endpoints)
+application load balancer
+API gateway
+cloudfront
+cognito user pool
+Appsync GraphQL API
+
+web ACL are used to control access to your server. they are regional except for cloudfront.
+
+WAF does not support the network load balancer (layer4)
+
+=======================================================
+
+
+AWS SHIELD: DDOS PROTECTION
+protects from DDOS attack.
+DDOS = distributed denial of service = too many requests at the same time
+the goal of DDOS is to overload your infrastructure
+
+aws shield standard = provides support against SYN/UDP and other layrer3 or layer 4 attacks
+
+aws shield advance = provides support against ELB, cloudfront distribution, route53,  EC2, GA, 
+access to DDOS response team
+protect against higher fee resulting using usage of the atack
+it automatically creates, evaluates and deploy WAF rules to mitigate layer7 attacks
+
+===============================================
+
+
+AWS FIREWALL MANAGER (FM)
+manage rules in all accounts in AWS organization.
+
+========================================= 
+
+WAF VS SHIELD VS FM
+They are used together for comprehensive protection
+define your web ACL rule in WAF
+for granular protection of your resources, WAF alone is not a best choice
+if you want to use WAF accross multiple accounts, use AWS Firewall Manager
+shield advance have additional features such as shield reponse team, and advanced reporting 
+if you are prone to frequent DDOS everytime, consider shield advanced. 
+
+=======================================================
+
+AMAZON GUARDDUTY
+
+Intelligent threat discovery to protect your account.
+uses ML algorithm, anomaly detection, third party data.
+can setup eventbridge rules to ne notified in case of any findings
+evenbridge rules can target AWS lmabda or SNS
+can protect against cryptocurrency attack.
+
+
+===================================
+
+AMAZON INSPECTOR
+Allows you to run automated security assessment
+
+For EC2:
+	leveraging the AWS system manager (SSM) agent
+	anaylse against unintended network accessibility
+	analyse the running OS against kniwn vulnerability
+
+For container images push to amazon ECR
+	assessment of container images as they are pushed
+
+For lamba function
+	identifies software vulnerability
+	assessment of functions as they deploy.
+
+
+can report findings to AWS security hub
+send findings to amazon eventbridge
+continous scaling of infrastructure.
+
+======================================================
+
+
+AWS MACIE
+AWS MACIE is a fully managed data security and data privacy service  that uses ML to detect and protect your sensitive data in AWS.
+it identifies and alerts you to sensitive data such as personal identifiable information (PII)
+alert can be sent to amazon eventbridge
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

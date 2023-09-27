@@ -1,0 +1,125 @@
+
+DISASTER RECOVERY IN AWS
+
+DISASTER is any occurence that has a negative effect on your application
+disaster recovery is about preparing for and recovery against disaster
+
+
+Recovery point objective (RPO) and recovery time objective (RTO)
+RPO is how often you run backup. RTO is the downtime the application has after recovery.
+
+pilot-light is a Disaster Recovery strategy with the highest Recovery Time Objective (RTO) and Recovery Point Objective (RPO). it is cheaper to use.
+multi-site is a Disaster Recovery strategy with the lowest Recovery Time Objective (RTO) and Recovery Point Objective (RPO), regardless of the cost
+warm standby helps you to recover quickly and scale-up automatically incase of disaster. 
+
+If you're interested, read more about Disaster Recovery options in AWS here: 
+https://docs.aws.amazon.com/whitepapers/latest/disaster-recovery-workloads-on-aws/disaster-recovery-options-in-the-cloud.html
+
+===================================
+
+DATA BASE MIGRATION
+
+allows you to migrate database from on-premise to AWS.
+homogenous (oracle to oracle db) and heterogenous migration (mySQL server to aurora)
+you must create an EC2 instance to perform the replication task.
+
+
+AWS SCHEMA CONVERSION TOOLS (SCT)
+Converts your database schema from one engine to another.
+you dont need to use SCT if you are migrating to same database engine.
+
+==========================================
+
+RDS AND AURORA MIGRATION
+
+rds mysql to aurora mysql
+option1: db snapshot of rds mysql and restore snapshot as aurora mysql
+option2: create an aurora read replica from rds mysql. when the replication lag is zero, promite it as its own db cluster
+
+external rds mysq to aurora mysql
+1. use percona xtrabackup create backup in amazon S3.
+2. create an aurora mysql db from S3.
+
+use DMS if both db are up and running.
+
+
+RDS POSTGRES AND AURORA POSTGRES MIGRATION.
+1. db snapshot of rds postgres and restore as aurora postgres.
+2. create an aurora read replica from your rds postgres, when the replication lag is zero, promite it as its own db cluster
+
+EXTERNAL POSTGRES TO AURORA POSTGRES
+create a backup and put in S3
+import using aws-s3 aurora extension
+
+use DMS if both db are up and running.
+
+===============================================================
+
+ON PREMISE STRATEGY WITH AWS.
+
+ability to download amazon linux 2 ami as VM
+VM import and export for migration
+aws application recovery service, gives info about your on-premise server to plan your migration
+aws migration hub helps you to track your migration.
+AWS Server Migration Service (SMS) to migrate volumes to AWS.
+
+===================================
+
+AWS BACKUP
+fully managed service that automates backup accross AWS services.
+ supported srvices
+EC2/EBS
+S3
+EFS
+RDS
+NFS
+STORAGE GATEWAY
+DOCUMENTDB
+
+AWS Backup enables you to centralize and automate data protection across AWS services. 
+It helps you support your regulatory compliance or business policies for data protection.
+supports cross account backup. supports point in time recovery (PITR)
+aws backup ======> backup plan ==================> attach to specific resources ========> automatic backup to S3.
+you define your policy inside your backup plan.
+
+BACKUP VAULT LOCK ensures you cannot delete your resources after backup. 
+
+===================================================
+
+AWS APPLICATION MIGRATION SERVICE (MGN)
+
+it is the easiest means to move to on-premise to AWS.
+lift and shift solution (rehost)
+
+
+TRANSFERING LARGE AMOUNT OF DATA INTO AWS
+SNOWBALL is the best option to transfer large files (200TB) from on-premise to AWS.
+
+
+VMWARE CLOUD ON AWS
+Helps you to extend your entire vmware software from on-premise to vmware cloud on AWS.
+if a customer is operating on vmware cloud on-premise and wants to migrate to cloud and still wants to retain using vmware cloud, aws vmware cloud provides 
+the environment for them.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
